@@ -1,10 +1,10 @@
 package anona.matanglawin;
 
 
-import java.util.HashSet;
+import java.util.*;
 
 public class TerminalValue {
-     static HashSet<TerminalObject> terminal = new HashSet<>();
+     static HashMap<String, ArrayList<String>> terminal = new HashMap<>();
      static double latitude, longitude;
      static final double radius = 6372.8;
 
@@ -19,18 +19,18 @@ public class TerminalValue {
      }
 
      public static void populate() {
-          HashSet<String> jeep = new HashSet<>();
+          ArrayList<String> jeep = new ArrayList<>();
 
           jeep.add("SM");
-          terminal.add(new TerminalObject("Vinzons", jeep, 14.654337, 121.073016));
+          terminal.put("Vinzons SM", jeep);
           jeep.clear();
 
           jeep.add("MRT");
-          terminal.add(new TerminalObject("Vinzons", jeep, 14.655873, 121.072973));
+          terminal.put("Vinzons MRT", jeep);
           jeep.clear();
 
           jeep.add("Ikot");
-          terminal.add(new TerminalObject("CHK", jeep, 14.657783, 121.062438));
+          terminal.put("CHK", jeep);
           jeep.clear();
 
           jeep.add("Katipunan");
@@ -38,92 +38,92 @@ public class TerminalValue {
           jeep.add("Philcoa");
           jeep.add("Toki");
           jeep.add("SM");
-          terminal.add(new TerminalObject("AS", jeep, 14.653800, 121.068071));
+          terminal.put("FC", jeep);
           jeep.clear();
 
           jeep.add("Katipunan");
-          terminal.add(new TerminalObject("Vinzons", jeep, 14.653696, 121.072748));
+          terminal.put("UPIS", jeep);
           jeep.clear();
 
           jeep.add("Ikot");
-          terminal.add(new TerminalObject("Vinzons", jeep, 14.654703, 121.073156));
+          terminal.put("Vinzons Ikot", jeep);
           jeep.clear();
 
           jeep.add("Ikot");
           jeep.add("Toki");
-          terminal.add(new TerminalObject("CS Library", jeep, 14.648890, 121.068983));
+          terminal.put("CS Library", jeep);
           jeep.clear();
 
           jeep.add("Ikot");
           jeep.add("Katipunan");
           jeep.add("MRT");
           jeep.add("Philcoa");
-          terminal.add(new TerminalObject("Law", jeep, 14.656812, 121.072803));
+          terminal.put("Law", jeep);
           jeep.clear();
 
           jeep.add("Ikot");
           jeep.add("MRT");
           jeep.add("Philcoa");
           jeep.add("Katipunan");
-          terminal.add(new TerminalObject("Infirmary", jeep, 14.659459, 121.071655));
+          terminal.put("Infirmary", jeep);
           jeep.clear();
 
           jeep.add("Ikot");
           jeep.add("MRT");
           jeep.add("Philcoa");
           jeep.add("Katipunan");
-          terminal.add(new TerminalObject("Kalayaan Dorm", jeep, 14.658867, 121.068458));
+          terminal.put("Kalayaan Dorm", jeep);
           jeep.clear();
 
           jeep.add("Ikot");
           jeep.add("MRT");
           jeep.add("Philcoa");
           jeep.add("Katipunan");
-          terminal.add(new TerminalObject("SC", jeep, 14.659438, 121.070336));
+          terminal.put("SC", jeep);
           jeep.clear();
 
           jeep.add("Ikot");
           jeep.add("MRT");
           jeep.add("Philcoa");
           jeep.add("Katipunan");
-          terminal.add(new TerminalObject("Coop", jeep, 14.659386, 121.069209));
+          terminal.put("Coop", jeep);
           jeep.clear();
 
           jeep.add("Ikot");
           jeep.add("MRT");
           jeep.add("Philcoa");
           jeep.add("Katipunan");
-          terminal.add(new TerminalObject("Engineering", jeep, 14.657705, 121.068458));
+          terminal.put("Engineering", jeep);
           jeep.clear();
 
           jeep.add("Toki");
-          terminal.add(new TerminalObject("NIP", jeep, 14.649692, 121.073683));
+          terminal.put("NIP", jeep);
           jeep.clear();
 
           jeep.add("Toki");
-          terminal.add(new TerminalObject("Math", jeep, 14.648270, 121.072203));
+          terminal.put("Math", jeep);
           jeep.clear();
 
           jeep.add("Ikot");
           jeep.add("Toki");
-          terminal.add(new TerminalObject("EEEI", jeep, 14.649951, 121.068673));
+          terminal.put("EEEI", jeep);
           jeep.clear();
 
           jeep.add("MRT");
           jeep.add("Philcoa");
           jeep.add("Katipunan");
-          terminal.add(new TerminalObject("Roxas Ave", jeep, 14.653577, 121.065185));
+          terminal.put("Roxas Ave", jeep);
           jeep.clear();
 
           jeep.add("MRT");
           jeep.add("Ikot");
           jeep.add("Philcoa");
           jeep.add("Katipunan");
-          terminal.add(new TerminalObject("Oblation", jeep, 14.654926, 121.064273));
+          terminal.put("Oblation", jeep);
           jeep.clear();
 
           jeep.add("Ikot");
-          terminal.add(new TerminalObject("Vanguard", jeep, 14.657677, 121.064970));
+          terminal.put("Vanguard", jeep);
           jeep.clear();
      }
 
@@ -143,5 +143,28 @@ public class TerminalValue {
      //Value from ConvertUnits.com and other online converters
      public static int steps(double meters) {
           return (int)(meters * 1.31233595801);
+     }
+
+     public static ArrayList<SuggestionObj> suggestion(double sourceLat, double sourceLong) {
+          ArrayList<SuggestionObj> suggestions = new ArrayList<>();
+          PlaceMapping map = new PlaceMapping();
+          double destLat, destLong;
+          String dest;
+          int steps;
+
+          Set terminalSet = terminal.entrySet();
+          Iterator terminalIter = terminalSet.iterator();
+          while (terminalIter.hasNext()) {
+               dest = (String)terminalIter.next();
+               destLat = map.placeSet.get(dest).get(0);
+               destLong = map.placeSet.get(dest).get(1);
+
+               steps = steps(haversine(sourceLat, sourceLong, destLat, destLong));
+
+               if (steps <= 50)
+                    suggestions.add(new SuggestionObj(dest, steps));
+          }
+
+          return suggestions;
      }
 }

@@ -1,0 +1,5 @@
+<root>
+    <item name='android.content.Context java.lang.Object getSystemService(java.lang.String)'>
+        <annotation name='org.jetbrains.annotations.Nullable'/>
+    </item>
+</root>

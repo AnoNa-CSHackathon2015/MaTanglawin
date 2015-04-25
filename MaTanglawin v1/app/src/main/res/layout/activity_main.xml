@@ -6,21 +6,15 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:id="@+id/mainlayout"
     tools:context=".Main">
 
     <TextView
         android:text="@string/hello_world"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/speak"
-        android:layout_below="@+id/textView"
-        android:layout_marginTop="91dp"/>
+        android:id="@+id/textView"
+        />
 
     <EditText
         android:layout_width="wrap_content"
@@ -35,6 +29,6 @@
         android:layout_height = "400dp"
         android:gravity = "bottom"
         android:layout_alignParentBottom="true"
-        />
+        android:layout_alignParentTop="true"/>
 
 </RelativeLayout>
